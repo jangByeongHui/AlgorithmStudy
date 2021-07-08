@@ -10,11 +10,35 @@ visit=[0 for _ in range(N)]
 Stack=list()
 Queue=list()
 
-def find_next(node):
-    for i in range(N):
-        if graph[node][i]==1 and visit[i]==0:
-            return i
-    return -1
+def BFS(root):
+    Queue.append(root)
+    result=list()
+    while len(Queue)>0:
+        temp_node=Queue.pop(0)
+        if visit[temp_node]==0:
+            result.append(temp_node+1)
+            visit[temp_node]=1
+        
+        for i in range(N):
+            if graph[temp_node][i]==1 and visit[i]==0:
+                Queue.append(i)
+    
+    return result
+
+def DFS(root):
+    Stack.append(root)
+    result=list()
+
+    while len(Stack)>0:
+        temp_node=Stack.pop()
+        if visit[temp_node]==0:
+            result.append(temp_node+1)
+            visit[temp_node]=1
+        for i in reversed(range(N)):
+            if graph[temp_node][i]==1 and visit[i]==0:
+                Stack.append(i)
+    return result
+
 
 for i in range(N):
     graph[i][i]=1
@@ -26,44 +50,21 @@ for i in range(M):
     graph[s_node][t_node]=1
     graph[t_node][s_node]=1
 
-visit[V-1]=1
-print(V,end=" ")
+#DFS
+DFS_Answer=DFS(V-1)
 
-Stack.append(find_next(V-1))
+for i in DFS_Answer:
+    print(i,end=" ")
 
-while len(Stack)>0:
-    temp_node=Stack.pop()
-    if temp_node==-1:
-        break
-    visit[temp_node]=1
-    print(temp_node+1,end=" ")
-
-    next_node=find_next(temp_node)
-
-    if next_node!=-1:
-        Stack.append(next_node)
 print()
 
 for i in range(N):
     visit[i]=0
 
-visit[V-1]=1   
-print(V,end=" ")
-
-
-for i in range(N):
-    if graph[V-1][i] and visit[i]==0:
-        Queue.append(i)
-
-while len(Queue)>0:
-    temp_node=Queue.pop(0)
-    if visit[temp_node]==0:
-        print(temp_node+1,end=" ")
-        visit[temp_node]=1
-
-    for i in range(N):
-        if graph[temp_node][i] and visit[i]==0:
-            Queue.append(i)
+# BFS
+BFS_Answer=BFS(V-1)
+for i in BFS_Answer:
+    print(i,end=" ")
     
 
 
