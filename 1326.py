@@ -6,29 +6,45 @@ N=int(N)
 stone=list(map(int,input().split()))
 
 Source,Target=input().split()
-Source=int(Source)
-Target=int(Target)
+Source=int(Source)-1
+Target=int(Target)-1
 
 visit=[0 for _ in range(N)]
 Queue=queue.Queue()
+count=0
+Queue.put((Source,count))
 
-Queue.put(Source)
 
-while len(Queue)>0:
-    temp_pos=Queue.get()
+while Queue.empty()!=True:
+    
+    temp_pos,t_count=Queue.get()
     if visit[temp_pos]==0:
         visit[temp_pos]=1
+        #print(temp_pos,t_count)
+        if temp_pos==Target:
+            print(t_count)
+            break
         
-        diff=abs(Target-Source)
-        move=diff//stone[temp_pos]
+        now_pos=temp_pos
+        now_pos=temp_pos-stone[temp_pos]
+        
+        while 0<=now_pos:
+            Queue.put((now_pos,t_count+1))
+            now_pos=now_pos-stone[temp_pos]
 
-        if Source<Target and Source+move<N:
-            while
-        if Target<Source and 0<(Source-move):
-            Source=Source-move
-            Queue.put(Source)
-    el
+        now_pos=temp_pos
+        now_pos=now_pos+stone[temp_pos]
 
+        while now_pos<N:
+            Queue.put((now_pos,t_count+1))
+            now_pos=now_pos+stone[temp_pos]
+
+        
+    else:
+        continue
+else:
+    print(-1)
+            
 
 
 
