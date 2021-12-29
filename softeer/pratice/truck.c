@@ -12,8 +12,8 @@ struct scenario{
 	int size;
 };
 
-struct offer *sorted_offer;
-struct scenario *sorted_scenario;
+struct offer sorted_offer[500000];
+struct scenario sorted_scenario[500000];
 //flag 0:offer 1:scenario
 void merge_offer_sort(struct offer *list, int left, int right);
 void merge_offer(struct offer *list, int left, int mid, int right);
@@ -24,8 +24,8 @@ void offer_add(int* s, struct offer **ar);
 
 int main(void)
 {
-	struct offer *offer;
-	struct scenario *scenario;
+	struct offer offer[500000];
+	struct scenario scenario[500000];
 	int N,numBuyer,numScenario,offer_len=0;
 	
 	scanf("%d",&N);
@@ -38,7 +38,8 @@ int main(void)
 			temp.id=i;
 			scanf("%d",&temp.size);
 			scanf("%d",&temp.price);
-			offer_add(&offer_len,&offer);
+			//offer_add(&offer_len,&offer);
+			offer_len++;
 			offer[offer_len-1]=temp;
 		}
 
@@ -47,7 +48,7 @@ int main(void)
 	// 	printf("offer_size: %d offer_price: %d offer_id: %d\n",offer[i].size,offer[i].price,offer[i].id);
 	// }
 	//size 별로 제안 금액 정렬
-	sorted_offer=(struct offer*)malloc(sizeof(struct offer)*offer_len);
+	//sorted_offer=(struct offer*)malloc(sizeof(struct offer)*offer_len);
 	// for(int i=0;i<offer_len;i++){
 	// 	printf("%d %d %d\n",offer[i].size,offer[i].price,offer[i].id);
 	// }
@@ -55,11 +56,10 @@ int main(void)
 	// for(int i=0;i<offer_len;i++){
 	// 	printf("offer_size: %d offer_price: %d offer_id: %d\n",offer[i].size,offer[i].price,offer[i].id);
 	// }
-	free(sorted_offer);
 	//목표 매출액 입력
 	scanf("%d",&numScenario);
-	scenario=(struct scenario*)malloc(sizeof(struct scenario)*numScenario);
-	sorted_scenario=(struct scenario*)malloc(sizeof(struct scenario)*numScenario);
+	//scenario=(struct scenario*)malloc(sizeof(struct scenario)*numScenario);
+	//sorted_scenario=(struct scenario*)malloc(sizeof(struct scenario)*numScenario);
 
 	for(int i=0;i<numScenario;i++){
 		struct scenario temp;
@@ -75,10 +75,8 @@ int main(void)
 
 	//calculate
 	int revenue=0;
-	int *buyerPayment=(int*)malloc(sizeof(int)*(N+1));
-	for(int i=0;i<N+1;i++){
-		buyerPayment[i]=0;
-	}
+	//int *buyerPayment=(int*)malloc(sizeof(int)*(N+1));
+	int buyerPayment[100001]={0,};
 	int sIndex=0;
 	for(int i=0;i<offer_len;i++){
 		int size=offer[i].size;
@@ -103,27 +101,27 @@ int main(void)
 	for(int i=0;i<numScenario;i++){
 		printf("%d ",scenario[i].size);
 	}
-	free(scenario);
-	free(offer);
-	free(sorted_scenario);
+	// free(scenario);
+	// free(offer);
+	// free(sorted_scenario);
 	
 	return 0;
 }
 
 
-void offer_add(int* s, struct offer **ar){
-    int newsize = *s + 1; //size의 크기를 1 증가시킴
+// void offer_add(int* s, struct offer **ar){
+//     int newsize = *s + 1; //size의 크기를 1 증가시킴
 
-    //main의 arr보다 길이가 긴 배열 생성
-	struct offer* temp = (struct offer*)malloc(sizeof(struct offer)*newsize);
-    //ar의 값을 temp에 복사
-    for (int i = 0; i < *s; i++)
-    	temp[i] = (*ar)[i];
-	if(*s>0)
-    	free(*ar); //이전 배열 삭제
-    *ar = temp;
-    *s += 1; //main의 size를 1증가시킴
-}
+//     //main의 arr보다 길이가 긴 배열 생성
+// 	struct offer* temp = (struct offer*)malloc(sizeof(struct offer)*newsize);
+//     //ar의 값을 temp에 복사
+//     for (int i = 0; i < *s; i++)
+//     	temp[i] = (*ar)[i];
+// 	if(*s>0)
+//     	free(*ar); //이전 배열 삭제
+//     *ar = temp;
+//     *s += 1; //main의 size를 1증가시킴
+// }
 
 void merge_offer(struct offer *list, int left, int mid, int right){
   int i, j, k, l;
