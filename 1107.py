@@ -6,7 +6,7 @@ Target_len=len(Target)
 broken_num=int(sys.stdin.readline())
 Min = 99999999
 Min_Value=0
-Min_count=0
+Min_count=99999999
 
 if broken_num!=0:
     broken_Buttons=list(map(int,sys.stdin.readline().rstrip().split()))
@@ -19,16 +19,29 @@ now_ch = 100
 for removeValue in broken_Buttons:
     available_buttons.remove(removeValue)
 
+available_buttons.sort()
+
 def dfs(N, num, Target_len):
     global Min, Min_count,available_buttons,Min_Value
+    #print(num)
     if N == Target_len+1:
-        if Min > abs(int(num)-Target_int):
+        # print("??", int(num))
+        if Min == abs(int(num)-Target_int) and Min_count>len(str(int(num))):
             Min_Value=int(num)
-            Min = abs(int(num) - Target_int)
+            Min=abs(int(num)-Target_int)
             Min_count=len(str(Min_Value))
+        if Min > abs(int(num)-Target_int):
+                Min_Value=int(num)
+                Min = abs(int(num) - Target_int)
+                Min_count=len(str(Min_Value))
         return
     else:
         try:
+            # print("?",int(num))
+            if Min == abs(int(num) - Target_int) and Min_count > len(str(int(num))):
+                Min_Value = int(num)
+                Min = abs(int(num) - Target_int)
+                Min_count = len(str(Min_Value))
             if Min > abs(int(num)-Target_int):
                 Min_Value=int(num)
                 Min = abs(int(num) - Target_int)
@@ -43,12 +56,10 @@ if Target_int == now_ch:
     print(0)
 
 elif broken_num == 10:
-    print(abs(Target_int-100))
-elif abs(now_ch-Target_int)<=len(Target):
-    print(abs(now_ch-Target_int))
+    print(abs(Target_int-now_ch))
 
 else:
-
-    dfs(0,"",Target_len)
+    dfs(-1,"",Target_len)
     # print(f'Min_count : {Min_count} Min_Value : {Min_Value} Targe_int : {Target_int}')
+    print("found", Min_Value)
     print(min(Min_count+abs(Min_Value-Target_int),abs(now_ch-Target_int)))

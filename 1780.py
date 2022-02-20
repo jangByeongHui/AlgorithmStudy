@@ -12,4 +12,3 @@ minus_count=0
 plus_count=0
 
 for i in range(2,N):
-
