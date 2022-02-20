@@ -26,26 +26,28 @@ def dfs(N, num, Target_len):
     #print(num)
     if N == Target_len+1:
         # print("??", int(num))
-        if Min == abs(int(num)-Target_int) and Min_count>len(str(int(num))):
-            Min_Value=int(num)
-            Min=abs(int(num)-Target_int)
-            Min_count=len(str(Min_Value))
-        if Min > abs(int(num)-Target_int):
-                Min_Value=int(num)
-                Min = abs(int(num) - Target_int)
-                Min_count=len(str(Min_Value))
+        if Min >= abs(int(num)-Target_int):
+                if Min ==abs(int(num)-Target_int):
+                    if Min_count>len(str(int(num))):
+                        Min_Value=int(num)
+                        Min_count=len(str(Min_Value))
+                else:
+                    Min_Value=int(num)
+                    Min = abs(int(num) - Target_int)
+                    Min_count=len(str(Min_Value))
         return
     else:
         try:
             # print("?",int(num))
-            if Min == abs(int(num) - Target_int) and Min_count > len(str(int(num))):
-                Min_Value = int(num)
-                Min = abs(int(num) - Target_int)
-                Min_count = len(str(Min_Value))
-            if Min > abs(int(num)-Target_int):
-                Min_Value=int(num)
-                Min = abs(int(num) - Target_int)
-                Min_count=len(str(Min_Value))
+            if Min >= abs(int(num)-Target_int):
+                if Min == abs(int(num) - Target_int):
+                    if Min_count > len(str(int(num))):
+                        Min_Value = int(num)
+                        Min_count = len(str(Min_Value))
+                else:
+                    Min_Value = int(num)
+                    Min = abs(int(num) - Target_int)
+                    Min_count = len(str(Min_Value))
         except:
             pass
         for button in available_buttons:
@@ -59,7 +61,7 @@ elif broken_num == 10:
     print(abs(Target_int-now_ch))
 
 else:
-    dfs(-1,"",Target_len)
+    dfs(0,"",Target_len)
     # print(f'Min_count : {Min_count} Min_Value : {Min_Value} Targe_int : {Target_int}')
-    print("found", Min_Value)
+    #print("found", Min_Value)
     print(min(Min_count+abs(Min_Value-Target_int),abs(now_ch-Target_int)))
