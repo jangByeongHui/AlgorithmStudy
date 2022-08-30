@@ -1,6 +1,4 @@
 import sys
-import copy
-from collections import deque
 
 input = sys.stdin.readline
 
@@ -11,6 +9,7 @@ dice = [
     [-1, 5, -1],
     [-1, 6, -1]
 ]
+
 board = []
 
 direction = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 동쪽, 남쪽, 서쪽, 북쪽
@@ -37,11 +36,11 @@ def calculate_point(x, y):
     target_value = board[x][y]
     result = 0
     visited = [[False for _ in range(M)] for _ in range(N)]
-    queue = deque([(x, y)])
+    queue = [(x, y)]
 
     while queue:
 
-        tx, ty = queue.popleft()
+        tx, ty = queue.pop()
         if visited[tx][ty] == False:
             result += 1
             for dx, dy in direction:
@@ -77,11 +76,10 @@ for index in range(K):
     if dice[3][1] > board[x][y]:
         board_dir = (board_dir + 1) % 4  # 다음 진행방향 90도 시계 방향으로 변환
     elif dice[3][1] < board[x][y]:
-        board_dir -= 1
-        if board_dir < 0:
-            board_dir = 3
-    point += calculate_point(x, y)
+        board_dir = board_dir - 1 if (board_dir-1 >= 0) else 3
 
+    point += calculate_point(x, y)
+print(point)
     # print(f"############## DEBUG_{index+1} ###############")
     # print(f"1. x: {x} y: {y} board[{x}][{y}]: {board[x][y]} next_board_dir: {board_dir}\n")
     # print("2.dice map")
@@ -91,5 +89,3 @@ for index in range(K):
     # print("--------------------------------\n")
     # print(f"3.result: {point}")
     # print(f"############################################\n")
-
-print(point)
