@@ -4,3 +4,4 @@ venv
 *.jpg
 *.png
 *.mp4git
+.ide
