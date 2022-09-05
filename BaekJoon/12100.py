@@ -28,10 +28,6 @@ while queue:
             answer = max(answer,*row)
         continue
 
-    print("########### temp board ############")
-    for row in temp_board:
-        print(row)
-    print("###################################")
 
     # Up
 
@@ -46,9 +42,9 @@ while queue:
                 while 0 <= current_row and copy_up_board[current_row][j] == 0:
                     current_row -= 1
                 if 0 <= current_row and copy_up_board[current_row][j] == copy_up_board[i][j]:
-                    copy_up_board[current_row][j] += copy_up_board[i][j]
+                    copy_up_board[current_row][j] *= 2
                     copy_up_board[i][j] = 0
-                elif 0 <= current_row != i-1:
+                elif -1 <= current_row != i-1:
                     copy_up_board[current_row+1][j] = copy_up_board[i][j]
                     copy_up_board[i][j] = 0
     queue.append((copy_up_board,count+1))
@@ -66,9 +62,9 @@ while queue:
                 while current_row < N and copy_down_board[current_row][j] == 0:
                     current_row += 1
                 if current_row  < N and copy_down_board[current_row][j] == copy_down_board[i][j]:
-                    copy_down_board[current_row][j] += copy_down_board[i][j]
+                    copy_down_board[current_row][j] *= 2
                     copy_down_board[i][j] = 0
-                elif current_row < N and current_row != i+1:
+                elif current_row <= N and current_row != i+1:
                     copy_down_board[current_row-1][j] = copy_down_board[i][j]
                     copy_down_board[i][j] = 0
     queue.append((copy_down_board, count + 1))
@@ -85,12 +81,14 @@ while queue:
                 current_col = j - 1
                 while 0 <= current_col and copy_left_board[i][current_col] == 0:
                     current_col -= 1
+
                 if 0 <= current_col and copy_left_board[i][current_col] == copy_left_board[i][j]:
-                    copy_left_board[i][current_col] += copy_left_board[i][j]
+                    copy_left_board[i][current_col] *= 2
                     copy_left_board[i][j] = 0
-                elif 0 <= current_col and current_col != j-1:
+                elif -1 <= current_col and current_col != j-1:
                     copy_left_board[i][current_col+1] = copy_left_board[i][j]
                     copy_left_board[i][j] = 0
+
     queue.append((copy_left_board, count + 1))
 
 
@@ -107,12 +105,11 @@ while queue:
                 while current_col < N and copy_right_board[i][current_col] == 0:
                     current_col += 1
                 if current_col < N and copy_right_board[i][current_col] == copy_right_board[i][j] :
-                    copy_right_board[i][current_col] += copy_right_board[i][j]
+                    copy_right_board[i][current_col] *= 2
                     copy_right_board[i][j] = 0
-                elif current_col < N and current_col != j + 1:
+                elif current_col <= N and current_col != j + 1:
                     copy_right_board[i][current_col-1] = copy_right_board[i][j]
                     copy_right_board[i][j] = 0
-
     queue.append((copy_right_board, count + 1))
 
 print(answer)
