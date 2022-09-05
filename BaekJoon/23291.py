@@ -19,9 +19,6 @@ while max_value - min_value > K:
     for i in range(N):
         if fishes[i] == min_value:
             fishes[i] += 1
-    print("###### Flatten Fish Ball #######")
-    print(fishes)
-    print("##########################\n")
 
     # step2. stacking fish ball
     stacking_fish_ball = [[fishes[0]], fishes[1:]]
@@ -42,11 +39,6 @@ while max_value - min_value > K:
         row_len = len(temp_stacking_fish_ball)
         col_len = len(temp_stacking_fish_ball[0])
         stacking_fish_ball = temp_stacking_fish_ball
-
-    print("############ Rotate Fish Ball################")
-    for row in stacking_fish_ball:
-        print(row)
-    print("##########################################\n")
 
     # step3. adjust Fish count
     adjust_fish_value = [[0 for _ in range(len(row))] for row in stacking_fish_ball]
@@ -82,10 +74,6 @@ while max_value - min_value > K:
     for i in range(row_len):
         for j in range(len(stacking_fish_ball[i])):
             stacking_fish_ball[i][j] += adjust_fish_value[i][j]
-    print("############ Apply Fish Move #################")
-    for row in stacking_fish_ball:
-        print(row)
-    print("##########################################\n")
 
     # step4. Flatten fish ball - 그림8
     flatten_row_len = len(stacking_fish_ball)
@@ -102,19 +90,9 @@ while max_value - min_value > K:
     for rest_elem in stacking_fish_ball[flatten_row_len-1][flatten_col_len:]:
         flatten_fish_ball.append(rest_elem)
 
-
-    print("############ Flatten Fish Ball #################")
-    print(flatten_fish_ball)
-    print("##########################################\n")
-
     # step5. divide half flatten fish ball
     flatten_fish_ball_len = len(flatten_fish_ball)
     divide_fish_ball_first = [flatten_fish_ball[:flatten_fish_ball_len//2][::-1],flatten_fish_ball[flatten_fish_ball_len//2:]]
-
-    print("############ divide Fish Ball First #################")
-    for row in divide_fish_ball_first:
-        print(row)
-    print("##########################################\n")
 
     divide_fish_ball_second = deque()
     divide_fish_ball_first_row_len = len(divide_fish_ball_first)
@@ -131,11 +109,6 @@ while max_value - min_value > K:
         for j in range(divide_fish_ball_first_col_len//2,divide_fish_ball_first_col_len):
             new_row.append(divide_fish_ball_first[i][j])
         divide_fish_ball_second.append(new_row)
-
-    print("############ divide Fish Ball Second #################")
-    for row in divide_fish_ball_second:
-        print(row)
-    print("##########################################\n")
 
     # step6. adjust Fish count
     adjust_row_len = len(divide_fish_ball_second)
@@ -159,20 +132,11 @@ while max_value - min_value > K:
         for j in range(adjust_col_len):
             divide_fish_ball_second[i][j] += adjust_fish_value[i][j]
 
-    print("############ Apply Fish Move(SECOND) #################")
-    for row in divide_fish_ball_second:
-        print(row)
-    print("##########################################\n")
-
     # step7. Final Flatten
     final_fishes = []
     for j in range(adjust_col_len):
         for i in range(adjust_row_len-1,-1,-1):
             final_fishes.append(divide_fish_ball_second[i][j])
-
-    print("############ Flatten Final Fishes #################")
-    print(final_fishes)
-    print("##########################################\n")
 
     fishes = final_fishes
     answer += 1
