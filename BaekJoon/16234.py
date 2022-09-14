@@ -1,49 +1,67 @@
 import sys
+from collections import deque
+
 input = sys.stdin.readline
 
+# input data
 N, L, R = map(int,input().rstrip().split())
 
-population = []
-directions = [(1,0),(-1,0),(0,1),(0,-1)]
-answer = 0
+populations = []
+
 for _ in range(N):
-    population.append(list(map(int,input().rstrip().split())))
+    populations.append(list(map(int,input().rstrip().split())))
+
+# calculate
+answer = 0
+directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
 while True:
-    visited = [[True for _ in range(N)] for _ in range(N) ]
-    changed_population = [[0 for _ in range(N)] for _ in range(N)]
+    visited = [[False for _ in range(N)] for _ in range(N)]
+    union_set = []
 
+    # 연합국가들 파악
     for i in range(N):
         for j in range(N):
+
+            # 이미 다른 곳과 연합인 경우
             if visited[i][j]:
-                stack = [(i,j)]
-                union_country = [(i,j)]
-                union_sum = population[i][j]
-                union_count = 1
+                continue
+            queue = deque()
+            union = []
+            queue.append((i,j))
 
-                while stack:
-                    x, y = stack.pop()
-                    visited[x][y] = False
+            while queue:
+                x, y = queue.popleft()
 
-                    for dx, dy in directions:
-                        if 0 <= x+dx < N and 0 <= y+dy < N and visited[x+dx][y+dy] and L <= abs(population[x][y] - population[x+dx][y+dy]) <= R:
-                            union_sum += population[x+dx][y+dy]
-                            union_count += 1
-                            union_country.append((x+dx,y+dy))
-                            stack.append((x+dx,y+dy))
+                if visited[x][y]:
+                    continue
 
-                union_avg = union_sum//union_count
-                for (x,y) in union_country:
-                    changed_population[x][y] = union_avg
-    for i in range(N):
-        if population[i] != changed_population[i]:
-            break
-    else:
+                visited[x][y] = True
+                union.append((x,y))
+
+                for dx, dy in directions:
+                    Dx ,Dy = x+dx,y+dy
+                    if 0 <= Dx < N and 0 <= Dy < N and L<= abs(populations[x][y] - populations[Dx][Dy]) <= R and not visited[Dx][Dy]:
+                        queue.append((Dx,Dy))
+            union_set.append(union)
+
+    if len(union_set) == N*N:
         break
 
-    for i in range(N):
-        for j in range(N):
-            population[i][j] = changed_population[i][j]
+
+    # 인구 이동 시작
+    for countries in union_set:
+        total_population = 0
+        country_size = len(countries)
+
+        for r, c in countries:
+            total_population += populations[r][c]
+
+        for r, c in countries:
+            populations[r][c] = total_population//country_size
+
     answer += 1
+
+
 
 print(answer)
