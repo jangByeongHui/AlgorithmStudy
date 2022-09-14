@@ -18,7 +18,7 @@ directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 while True:
     visited = [[False for _ in range(N)] for _ in range(N)]
     union_set = []
-
+    stop_condition = True
     # 연합국가들 파악
     for i in range(N):
         for j in range(N):
@@ -43,6 +43,7 @@ while True:
                     Dx ,Dy = x+dx,y+dy
                     if 0 <= Dx < N and 0 <= Dy < N and L<= abs(populations[x][y] - populations[Dx][Dy]) <= R and not visited[Dx][Dy]:
                         queue.append((Dx,Dy))
+                        stop_condition = False
             union_set.append(union)
 
     if len(union_set) == N*N:
@@ -61,7 +62,5 @@ while True:
             populations[r][c] = total_population//country_size
 
     answer += 1
-
-
 
 print(answer)
