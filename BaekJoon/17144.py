@@ -126,8 +126,8 @@ def calculate_result(r,c,matrix):
 
 for t in range(T):
     dust_diffusion(R,C,room_dust)
-    print_board(room_dust)
+    #print_board(room_dust)
     activation_air_purifier(R, C, room_dust)
-    print_board(room_dust)
+    #print_board(room_dust)
 
 print(calculate_result(R,C,room_dust))
