@@ -104,7 +104,7 @@ def activation_air_purifier(r,c,matrix):
 
     for row in range(r):
         for col in range(c):
-            if expected_move_dust[row][col] != 0:
+            if expected_move_dust[row][col] != 0 and matrix[row][col] != -1:
                 matrix[row][col] = expected_move_dust[row][col]
 
 def print_board(matrix):
