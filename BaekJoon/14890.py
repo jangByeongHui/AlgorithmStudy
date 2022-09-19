@@ -51,9 +51,6 @@ def check_path(path,n,l):
     else:
         return True
 
-    # 어떠한 경우도 만족하지 않는다면 False
-    return False
-
 # 각 행에 대해서 계산
 for i in range(N):
     test_path = space[i][:]
