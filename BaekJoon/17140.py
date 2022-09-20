@@ -74,13 +74,16 @@ def cal_c():
 
     board = temp_board
 
-for answer in range(101):
 
-    if board[r-1][c-1] == k:
+for answer in range(101):
+    row_len = len(board)
+    col_len = len(board[0])
+
+    if r <= row_len and c <= col_len and board[r-1][c-1] == k:
         print(answer)
         break
 
-    if len(board) >= len(board[0]):
+    if row_len >= col_len:
         cal_r()
     else:
         cal_c()
