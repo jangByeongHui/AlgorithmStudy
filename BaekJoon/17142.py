@@ -58,8 +58,9 @@ for selected_virus in combinations(virus_pos,M):
             if 0 <= temp_x < N and 0 <= temp_y < N and not visited[temp_x][temp_y] and (copy_research_center[temp_x][temp_y] == 0 or copy_research_center[temp_x][temp_y] == 2): # 벽이면 바이러스 전이
                 queue.append((temp_x,temp_y,seconds+1))
 
-    if is_non_space(copy_research_center,N):
-        answer = min(answer,spend_time)
+        if is_non_space(copy_research_center,N):
+            answer = min(answer,spend_time)
+            break
 
 if answer == sys.maxsize:
     print(-1)
