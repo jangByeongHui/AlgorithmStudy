@@ -16,28 +16,26 @@ for _ in range(N):
     research_center.append(list(map(int,input().rstrip().split())))
 
 
-# 함수 정의
-def is_non_space(matrix,N):
-    for i in range(N):
-        for j in range(N):
-            if matrix[i][j] == 0:
-                return False
-    return True
-
 virus_pos = []
+empty_space = 0
 # 바이러스 놓을 수 있는 위치
 for i in range(N):
     for j in range(N):
         if research_center[i][j] == 2:
             virus_pos.append((i,j))
+        if research_center[i][j] == 0:
+            empty_space += 1
 
 answer = sys.maxsize
+
 # virus 놓기
 for selected_virus in combinations(virus_pos,M):
     queue = deque()
     visited = [[False for _ in range(N)] for _ in range(N)]
     copy_research_center = []
     spend_time = - sys.maxsize
+    temp_empty_space = 0
+
     for row in research_center:
         copy_research_center.append(row[:])
 
@@ -47,20 +45,28 @@ for selected_virus in combinations(virus_pos,M):
     while queue:
 
         x, y, seconds = queue.popleft()
+
         if visited[x][y]:
             continue
-        copy_research_center[x][y] = 2
+
+        if copy_research_center[x][y] == 0:
+            temp_empty_space += 1
+            copy_research_center[x][y] = 2
+
         spend_time = max(spend_time,seconds)
+        if empty_space == temp_empty_space:
+            break
+
         visited[x][y] = True
 
         for dx,dy in directions:
             temp_x,temp_y = x+dx,y+dy
-            if 0 <= temp_x < N and 0 <= temp_y < N and not visited[temp_x][temp_y] and (copy_research_center[temp_x][temp_y] == 0 or copy_research_center[temp_x][temp_y] == 2): # 벽이면 바이러스 전이
+            if 0 <= temp_x < N and 0 <= temp_y < N and not visited[temp_x][temp_y] and (copy_research_center[temp_x][temp_y] == 0 or copy_research_center[temp_x][temp_y] == 2): # 벽이 아니면 바이러스 전이
                 queue.append((temp_x,temp_y,seconds+1))
 
-        if is_non_space(copy_research_center,N):
-            answer = min(answer,spend_time)
-            break
+    if empty_space == temp_empty_space:
+        answer = min(answer,spend_time)
+
 
 if answer == sys.maxsize:
     print(-1)
