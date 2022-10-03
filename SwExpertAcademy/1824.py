@@ -122,6 +122,4 @@ for index in range(1,T+1):
             if not visited[state.format(nx,ny,memory,"down")]:
                 queue.append((nx, ny, memory, "down"))
 
-    for key, value in visited.items():
-        print(key,value)
     print(f"#{index} {answer}")
