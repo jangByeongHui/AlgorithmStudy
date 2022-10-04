@@ -35,4 +35,4 @@ for _ in range(10):
                     if 0 <= tx < 100 and 0 <= ty < 100 and ladder[tx][ty] != 0 and not visited[tx][ty]:
                         queue.append((tx,ty))
                         break
-    print(f"{index} {answer}")
+    print(f"#{index} {answer}")
