@@ -1,62 +1,76 @@
 import sys
-from itertools import product
 from copy import deepcopy
 
 input = sys.stdin.readline
 
-N, M = map(int,input().rstrip().split())
+directions = [(-1,0),(1,0),(0,-1),(0,1)]
+
+cctv_directions = [
+    [[0],[1],[2],[3]]
+    ,[[0,1],[2,3]]
+    ,[[0,2],[0,3],[1,2],[1,3]]
+    ,[[0,1,2],[0,1,3],[0,2,3],[1,2,3]]
+    ,[[0,1,2,3]]
+]
 
 office = []
-cctv_list = {
-    1:[[(0,1)],[(1,0)],[(0,-1)],[(-1,0)]],
-    2:[[(0,1),(0,-1)],[(-1,0),(1,0)]],
-    3:[[(-1,0),(0,1)],[(1,0),(0,1)],[(1,0),(0,-1)],[(-1,0),(0,-1)]],
-    4:[[(0,-1),(1,0),(0,1)],[(1,0),(0,1),(0,-1)],[(-1,0),(1,0),(0,1)],[(-1,0),(0,-1),(1,0)]],
-    5:[[(1,0),(0,1),(-1,0),(0,-1)]]
-    }
+cctv_list = []
 
-for _ in range(N):
-    office.append(list(map(int,input().rstrip().split())))
 
-cctv_counter = []
+N, M = map(int,input().rstrip().split())
 
-for i in range(N):
-    for j in range(M):
-        if office[i][j] != 0 and office[i][j] != 6:
-            cctv_counter.append((office[i][j],i,j))
+# 데이터 입력
+for x in range(N):
+    row = list(map(int,input().rstrip().split()))
+    office.append(row)
+    for y, element in enumerate(row):
+        if 1 <= element <= 5:
+            cctv_list.append((x,y,element))
 
+# 재귀 탐색 함수 정의
+cctv_list_len = len(cctv_list)
 answer = N*M
 
-cctv_dir_ways = []
-
-for cctv_num,x,y in cctv_counter:
-    cctv_dir_ways.append(cctv_list[cctv_num])
-
-def zero_counter(matrix,n,m):
-    result = 0
-    for i in range(n):
-        for j in range(m):
-            if matrix[i][j] == 0:
-                result += 1
-    return result
+def fill_cctv_area(x,y,direction,matrix):
 
 
-for way in product(*cctv_dir_ways):
-    temp_office = deepcopy(office)
+    for dir_num in direction:
 
-    for index, directions in enumerate(way):
-        _, x, y = cctv_counter[index]
+        nx, ny = x, y
+        dx, dy = directions[dir_num]
 
-        for dx, dy in directions:
-            tx, ty = x + dx, y + dy
+        while True:
 
-            while True:
-                if 0 <= tx < N and 0 <= ty < M and temp_office[tx][ty] != 6:
-                    temp_office[tx][ty] = "#"
-                    tx += dx
-                    ty += dy
-                else:
-                    break
-    answer = min(answer,zero_counter(temp_office,N,M))
+            nx += dx
+            ny += dy
+
+            if not (0 <= nx < N and 0 <= ny < M):
+                break
+
+            if matrix[nx][ny] == 6:
+                break
+
+            if matrix[nx][ny] == 0:
+                matrix[nx][ny] = "#"
+
+def dfs(depth,matrix):
+    global answer
+
+    if depth == cctv_list_len:
+        count = 0
+        for row in matrix:
+            count += row.count(0)
+        answer = min(answer,count)
+        return
+
+    x, y , cctv_type = cctv_list[depth]
+    temp_matrix = deepcopy(matrix) # 이전 상태로 복귀
+
+    for dir in cctv_directions[cctv_type-1]:
+        fill_cctv_area(x,y,dir,temp_matrix)
+        dfs(depth+1,temp_matrix)
+        temp_matrix = deepcopy(matrix)
+
+dfs(0,office)
 
 print(answer)
