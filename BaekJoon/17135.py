@@ -20,7 +20,6 @@ answer = 0
 
 def count_kill(enemies):
     count = 0
-
     for enemy in enemies:
         if not enemy["alive"]:
             count += 1
@@ -37,7 +36,6 @@ for archers_y in combinations(range(M),3):
     while True:
         # 궁수 공격
         for archer_x, archer_y in archers:
-
             for index, enemy in enumerate(temp_enemies):
                 # 이미 죽었거나 없는 게임에 없는 적은 제외
                 if not temp_enemies[index]["ingame"] or not temp_enemies[index]["alive"]:
