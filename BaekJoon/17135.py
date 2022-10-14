@@ -35,17 +35,27 @@ for archers_y in combinations(range(M),3):
     # 적이 사라질 때까지 게임 진행
     while True:
         # 궁수 공격
+
         for archer_x, archer_y in archers:
+            kill_candidate = []
             for index, enemy in enumerate(temp_enemies):
-                # 이미 죽었거나 없는 게임에 없는 적은 제외
-                if not temp_enemies[index]["ingame"] or not temp_enemies[index]["alive"]:
+
+                if not enemy["ingame"]:
                     continue
 
-                # 적 사살
-                if abs(archer_x-temp_enemies[index]["x"]) + abs(archer_y-temp_enemies[index]["y"]) <= D:
-                    temp_enemies[index]["alive"] = False
-                    temp_enemies[index]["ingame"] = False
-                    break
+                temp_distance = abs(archer_x-enemy['x']) + abs(archer_y-enemy['y'])
+                if temp_distance <= D:
+                    kill_candidate.append((index,enemy['y'],temp_distance))
+
+            if len(kill_candidate) > 0:
+                kill_candidate.sort(key = lambda x:(x[2],x[1])) # 가장 가깝고 가장 왼쪽에 있는 적
+
+                temp_enemies[kill_candidate[0][0]]["alive"] = False # 적 제거
+
+        # 궁수에 의해 죽은 적들은 게임에서 제외
+        for index in range(len(temp_enemies)):
+            if not temp_enemies[index]["alive"]:
+                temp_enemies[index]["ingame"] = False
 
         # 적 이동
         for index,enemy in enumerate(temp_enemies):
