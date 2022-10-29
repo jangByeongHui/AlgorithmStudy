@@ -11,7 +11,7 @@ stack = []
 
 for i in range(n):
     while stack and nums_count[nums[stack[-1]]] < nums_count[nums[i]]:
-            answer[stack.pop()] = nums[i]
+        answer[stack.pop()] = nums[i]
     stack.append(i)
 
 print(*answer)
