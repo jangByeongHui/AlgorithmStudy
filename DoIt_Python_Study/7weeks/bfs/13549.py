@@ -25,6 +25,6 @@ while queue:
         queue.append((subin_n-1, subin_move + 1))
 
     if 0 <= 2*subin_n <= 100000:
-        queue.append((2*subin_n, subin_move + 1))
+        queue.appendleft((2*subin_n, subin_move))
 
 
